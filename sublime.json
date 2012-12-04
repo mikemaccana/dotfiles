@@ -12,14 +12,15 @@
 { "keys": ["ctrl+super+d"], "command": "noop" },
 { "keys": ["ctrl+super+shift+d"], "command": "noop" },
 
-// Added by Mike - match Textmate shortcuts.
+// Added by Mike - match Textmate shortcuts. Super is 'Command' on a Mac.
 { "keys": ["ctrl+w"], "command": "find_under_expand" },
 { "keys": ["ctrl+shift+d"], "command": "duplicate_line" },
 { "keys": ["super+ctrl+v"], "command": "paste_and_indent" },
 { "keys": ["super+v"], "command": "paste" },
 { "keys": ["super+l"], "command": "show_overlay", "args": {"overlay": "goto", "text": ":"} },
 { "keys": ["super+f"], "command": "show_panel", "args": {"panel": "replace"} },
-//
+// New tab
+{ "keys": ["super+t"], "command": "new_file" },
 // Paste sensibly by default
-{ "keys": ["super+shift+v"], "command": "paste" },
-{ "keys": ["super+v"], "command": "paste_and_indent" }
+{ "keys": ["super+v"], "command": "paste_and_indent" },
+{ "keys": ["super+shift+v"], "command": "paste" }
