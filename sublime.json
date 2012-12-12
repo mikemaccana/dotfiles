@@ -1,3 +1,14 @@
+// Sublime Preferences
+// Added by Mike
+"word_wrap": true,
+//
+// Disable the crappy 'preview' mode that opens a file but doesn't show a tab
+// See http://stackoverflow.com/questions/9536280/sublime-text-2-files-not-opening-a-new-tab
+"preview_on_click": false,
+//
+"trim_trailing_white_space_on_save": true
+
+
 // Sublime Keyboard Mappings
 
 // These are OS X built in commands, and don't need to be listed here, but
