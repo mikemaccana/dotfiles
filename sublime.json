@@ -6,8 +6,9 @@
 // See http://stackoverflow.com/questions/9536280/sublime-text-2-files-not-opening-a-new-tab
 "preview_on_click": false,
 //
-"trim_trailing_white_space_on_save": true
-
+"trim_trailing_white_space_on_save": true,
+// Exclude CodeKit files
+"file_exclude_patterns": ["*.pyc", "*.pyo", "*.exe", "*.dll", "*.obj","*.o", "*.a", "*.lib", "*.so", "*.dylib", "*.ncb", "*.sdf", "*.suo", "*.pdb", "*.idb", ".DS_Store", "*.class", "*.psd", "*.d", "*-ck.js"]
 
 // Sublime Keyboard Mappings
 
