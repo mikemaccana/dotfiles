@@ -35,4 +35,7 @@
 { "keys": ["super+t"], "command": "new_file" },
 // Paste sensibly by default
 { "keys": ["super+v"], "command": "paste_and_indent" },
-{ "keys": ["super+shift+v"], "command": "paste" }
+{ "keys": ["super+shift+v"], "command": "paste" },
+//
+// Add a file in a new tab when Command T is pressed
+{ "keys": ["super+t"], "command": "new_file" }
