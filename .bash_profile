@@ -1,10 +1,26 @@
 export PS1='\w: '
 export PATH=$PATH:/usr/local/sbin:/Users/mike.maccana/Utilities/deploy
 
-# For Charles Proxy
-#export HTTP_PROXY=http://localhost:2222/
+# For Charles Proxy. ALL_PROXY is for Curl because curl sucks.
+#export HTTP_PROXY=http://localhost:2222/; export ALL_PROXY=http://localhost:2222/
 
+alias lsof='lsof -nP -i'
 
+function mate () {
+    echo 'Type subl instead.'
+}
+
+function fucking () {
+    sudo "$@"
+}
+
+function gg () {
+    git grep -n -i "$@"
+}
+
+function findname () {
+    find . -iname "$@"
+}
 
 
 # Sometimes we accidentally paste in the hostname with http attached. Strip it.
@@ -60,7 +76,7 @@ export NEWLINE_IFS=$'\n'
 shopt -s histappend
 export PROMPT_COMMAND="history -a"
 export HISTCONTROL="ignorespace:ignoredups"
-export HISTFILESIZE="8000"
+export HISTFILESIZE="100000"
 
 # Amazon EC2 tools
 export AWS_CREDENTIAL_FILE="/Users/mike.maccana/.aws_credentials"
@@ -98,4 +114,8 @@ export EC2_HOME=~/.ec2
 export PATH=$PATH:$EC2_HOME/bin
 export EC2_PRIVATE_KEY=$(ls $EC2_HOME/pk-*.pem)
 export EC2_CERT=$(ls $EC2_HOME/cert-*.pem)
+
+# Git configs from people cleverer than I
+git config --global branch.master.rebase true
+git config --global push.default current
 
