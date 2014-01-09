@@ -1,10 +1,50 @@
+# Ignore deprecations on GAE
+# alias manage.py='python2.5 -Wignore manage.py'
+
+# Ensure XCode 4 GCC doesn't try and compile PPC version of Apps
+# alias easy_install='sudo env ARCHFLAGS="-arch i386 -arch x86_64" easy_install-2.5'
+
+# Append historyrather than overwrite. Stops concurrent shells from blatting each other's history
+shopt -s histappend
+
+# Add typical Unix pathnames
+export PATH=~/bin:/opt/local/bin:/opt/local/sbin:$PATH:/usr/local/sbin:/Users/mike.maccana/Utilities/deploy:~/Applications/AndroidDevTools/sdk/platform-tools
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+# Node seems to have trouble finding globally installed modules without setting NODE_PATH
+export NODE_PATH=/usr/local/lib/node_modules
+
+# http://slackrw.wordpress.com/2010/07/31/mac-os-x-10-6-snow-leopard-re-enable-lcd-font-smoothing-for-some-monitors-via-macosxhints-com/
+#defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
+
+# History for node.
+# Requires 'npm install -g repl.history'
+function node-repl () {
+    repl.history
+}
+
 export PS1='\w: '
-export PATH=$PATH:/usr/local/sbin:/Users/mike.maccana/Utilities/deploy
+#export PS1="\[\033[G\]\w \$ "
+
+
 
 # For Charles Proxy. ALL_PROXY is for Curl because curl sucks.
 #export HTTP_PROXY=http://localhost:2222/; export ALL_PROXY=http://localhost:2222/
 
 alias lsof='lsof -nP -i'
+
+function android-emulator () {
+    # ~/Applications/AndroidDevTools/sdk/tools/emulator -avd Nexus7Android44
+    ~/Applications/AndroidDevTools/sdk/tools/emulator -avd Android43Fast
+}
+
+function android-console-log () {
+    adb logcat browser:V *:S
+}
 
 function mate () {
     echo 'Type subl instead.'
@@ -22,45 +62,9 @@ function findname () {
     find . -iname "$@"
 }
 
-
-# Sometimes we accidentally paste in the hostname with http attached. Strip it.
-function strip_scheme () {
-    if [[ "$1" == *http://* ]]
-    then
-        DESTINATION_HOST="$(echo $1 | sed 's#://# #' | awk '{print $2}')"
-    else
-        DESTINATION_HOST=$1
-    fi  
+function filemerge () {
+    /Applications/Xcode.app/Contents//Applications/FileMerge.app/Contents/MacOS/FileMerge -left $1 -right $2
 }
-
-
-# SSH with amazon preset options
-function amazonssh () {
-    strip_scheme $1
-    if [ -z $DESTINATION_HOST ]
-    then
-        echo "Please specify a host"
-    else
-        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 -i ~/.ssh/id_socialapps ec2-user@$DESTINATION_HOST
-    fi
-}
-
-# SSH with amazon preset options
-function amazonscp () {
-    SOURCE=$1
-    strip_scheme $2
-    scp -rv -o StrictHostKeyChecking=no -o ConnectTimeout=5 -i ~/.ssh/id_socialapps $SOURCE $DESTINATION_HOST
-}
-
-# Playbook BAT files
-function install_bar () {
-    PLAYBOOKIP=$1
-    PBPASSWORD=$2
-    BARFILE=$3
-    java -Xmx512M -jar BarDeploy.jar -installApp -device $PLAYBOOKIP -password $PBPASSWORD $BARFILE
-}
-
-
 
 
 
@@ -68,8 +72,8 @@ function install_bar () {
 # keytool -list -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit | grep charles
 # sudo keytool -import -alias charles -file /Applications/Charles.app//Contents/doc/charles-proxy-ssl-proxying-certificate.crt -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
 
-# Save the field separator 
-export REGULAR_IFS=$IFS       
+# Save the field separator
+export REGULAR_IFS=$IFS
 export NEWLINE_IFS=$'\n'
 
 # Always append history, not overwrite it.
@@ -77,17 +81,6 @@ shopt -s histappend
 export PROMPT_COMMAND="history -a"
 export HISTCONTROL="ignorespace:ignoredups"
 export HISTFILESIZE="100000"
-
-# Amazon EC2 tools
-export AWS_CREDENTIAL_FILE="/Users/mike.maccana/.aws_credentials"
-export AWS_AUTO_SCALING_HOME="/Applications/AutoScaling-1.0.49.1"
-export AWS_ELB_HOME="/Applications/ElasticLoadBalancing-1.0.17.0"
-export AWS_CLOUDWATCH_HOME="/Applications/CloudWatch-1.0.12.1"
-export PATH=$PATH:"${AWS_AUTO_SCALING_HOME}/bin":"${AWS_ELB_HOME}/bin":"${AWS_CLOUDWATCH_HOME}/bin"
-export AWS_CLOUDWATCH_URL=https://monitoring.us-east-1.amazonaws.com  
-
-# Java
-export MAVEN_OPTS="-Xmx1024M"
 
 # Set timezone
 export TZ="Europe/London"
@@ -97,25 +90,7 @@ if [ -f "$HOME/.bashrc" ]; then
   . "$HOME/.bashrc"
 fi
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
 
-# BV Development Environment Variables
-# export JAVA_HOME="/Library/Java/Home"
-export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home"
-export XMLBEANS_HOME="/tools/xmlbeans-2.5.0"
-export CLASSPATH="$XMLBEANS_HOME/lib/xbean.jar:$XMLBEANS_HOME/lib/jsr173_1.0_api.jar:$CLASSPATH"
-export PATH="/svnwork/svnscripts/trunk/working/bin:/svnwork/techservices/trunk/working/tools/bin:/opt/idea/bin:$XMLBEANS_HOME/bin:$PATH"
 
-# From http://www.robertsosinski.com/2008/01/26/starting-amazon-ec2-with-mac-os-x/
-export EC2_HOME=~/.ec2
-export PATH=$PATH:$EC2_HOME/bin
-export EC2_PRIVATE_KEY=$(ls $EC2_HOME/pk-*.pem)
-export EC2_CERT=$(ls $EC2_HOME/cert-*.pem)
-
-# Git configs from people cleverer than I
-git config --global branch.master.rebase true
-git config --global push.default current
-
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
