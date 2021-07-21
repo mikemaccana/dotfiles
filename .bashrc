@@ -165,5 +165,10 @@ function fuck-concourse(){
 # Two space tabs
 tabs 2
 
+# Python 3.8.5
+alias python=/usr/bin/python3
+alias pip=pip3
+
+cd ~/Code
 
 cd ~/Code
