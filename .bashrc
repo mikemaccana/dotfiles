@@ -56,23 +56,19 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-if [ "$color_prompt" = yes ]; then
-    # Remove the user and hostname
-    # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
+# https://unix.stackexchange.com/questions/252229/ps1-prompt-to-show-elapsed-time
+prompt_command() {
+  _PS1_now=$(printf '%(%s)T')
+  PS1=$( printf "\n\$? \[\e%02d:%02d:%02d \n\[\033[01;34m\]\w\[\033[00m\]\$ " \
+           $((  ( _PS1_now - _PS1_lastcmd ) / 3600))         \
+           $(( (( _PS1_now - _PS1_lastcmd ) % 3600) / 60 )) \
+           $((  ( _PS1_now - _PS1_lastcmd ) % 60))           \
+       )
+  _PS1_lastcmd=$_PS1_now
+}
+PROMPT_COMMAND='prompt_command'
+_PS1_lastcmd=$(printf '%(%s)T')
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
