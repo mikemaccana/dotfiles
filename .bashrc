@@ -58,13 +58,37 @@ fi
 
 # https://unix.stackexchange.com/questions/252229/ps1-prompt-to-show-elapsed-time
 prompt_command() {
-  _PS1_now=$(printf '%(%s)T')
-  PS1=$( printf "\n\$? \[\e%02d:%02d:%02d \n\[\033[01;34m\]\w\[\033[00m\]\$ " \
-           $((  ( _PS1_now - _PS1_lastcmd ) / 3600))         \
-           $(( (( _PS1_now - _PS1_lastcmd ) % 3600) / 60 )) \
-           $((  ( _PS1_now - _PS1_lastcmd ) % 60))           \
-       )
-  _PS1_lastcmd=$_PS1_now
+    
+    # if [ $? -ne 0 ]; 
+    # then 
+    #     STATUS_EMOJI="😱"; 
+    # else 
+    #     STATUS_EMOJI="😎"; 
+    # fi
+
+    case $? in
+
+        0)
+            STATUS_EMOJI="🤠"; 
+        ;;
+
+        130)
+            STATUS_EMOJI="🤠"; 
+        ;;
+
+        *)
+            STATUS_EMOJI="😱"; 
+        ;;
+    esac
+
+    _PS1_now=$(printf '%(%s)T')
+
+    PS1=$( printf "\n\$STATUS_EMOJI \[\e%02d:%02d:%02d \n\[\033[01;34m\]\w\[\033[00m\]\$ " \
+            $((  ( _PS1_now - _PS1_lastcmd ) / 3600))         \
+            $(( (( _PS1_now - _PS1_lastcmd ) % 3600) / 60 )) \
+            $((  ( _PS1_now - _PS1_lastcmd ) % 60))           \
+        )
+    _PS1_lastcmd=$_PS1_now
 }
 PROMPT_COMMAND='prompt_command'
 _PS1_lastcmd=$(printf '%(%s)T')
@@ -141,12 +165,6 @@ function docker-destroy-containers(){
     docker rm $(docker ps -a -q)
 }
 
-function docker-destroy-selleck-containers(){
-    SELLECK_CONTAINERS="$(docker ps -a | grep 'selleck_server_run' | awk '{print $1}')"
-    docker stop $SELLECK_CONTAINERS
-    docker rm $SELLECK_CONTAINERS
-}
-
 export DISABLE_OPENCOLLECTIVE=true
 export OPEN_SOURCE_CONTRIBUTOR=true
 
@@ -158,8 +176,21 @@ function fuck-concourse(){
     git commit --allow-empty -m "Concourse CI is a terrible piece of software"
 }
 
+function lint(){
+    npx eslint --fix src/**/*.ts; npx prettier --write 'src/**/*.{ts,js}'; 
+}
+
+function lint-file(){
+    FILE=$1
+    npx eslint --fix "${FILE}"; npx prettier --write "${FILE}"; 
+}
+
 # Two space tabs
 tabs 2
+
+# Deno
+export DENO_INSTALL="/home/mike/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
 
 # Python 3.8.5
 alias python=/usr/bin/python3
@@ -167,4 +198,22 @@ alias pip=pip3
 
 cd ~/Code
 
-cd ~/Code
+function git-reto-rename(){
+    OLD=$1
+    NEW=$2
+    mv $NEW $OLD
+    git mv $OLD $NEW
+}
+# add Pulumi to the PATH
+export PATH=$PATH:$HOME/.pulumi/bin
+
+
+function onetest(){
+    TESTNAME=$1
+    npx jest -t ${TESTNAME}
+}
+
+# AWS (humanloop)
+. "$HOME/.cargo/env"
+
+alias awsume=". awsume"
