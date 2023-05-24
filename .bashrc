@@ -58,13 +58,6 @@ fi
 
 # https://unix.stackexchange.com/questions/252229/ps1-prompt-to-show-elapsed-time
 prompt_command() {
-    
-    # if [ $? -ne 0 ]; 
-    # then 
-    #     STATUS_EMOJI="😱"; 
-    # else 
-    #     STATUS_EMOJI="😎"; 
-    # fi
 
     case $? in
 
